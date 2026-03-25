@@ -1,7 +1,7 @@
 :root {
     --bg-color: #0a0a0a;
     --text-color: #ffffff;
-    --accent-color: #d4af37;
+    /* --accent-color: #d4af37; */
     --font-main: 'Outfit', sans-serif;
 }
 
@@ -347,30 +347,32 @@ a.explore-btn:hover {
 
 .text-content {
     text-align: center;
-    background: #000;
-    padding: 2.5rem 2.8rem;
-    width: 95%;
-    max-width: 500px;
-    height: 380px;
-    /* Fixed height for consistency */
+    background: rgba(0, 0, 0, 0.75);
+    padding: 2.0rem;
+    margin: 1em;
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    /* Slightly more curved for the premium look */
+    pointer-events: auto;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    /* Fixed Size Implementation */
+    width: 480px;
+    height: 320px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 40px;
-    pointer-events: auto;
-    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-    border: 2px solid var(--accent-color);
-    /* Gold border from image */
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.82);
-    color: #ffffff;
+    gap: 0.4rem;
 }
 
 @media (max-width: 768px) {
     .text-content {
         height: 350px;
         padding: 1.5rem 2.2rem;
-        border-radius: 30px;
+        margin: 1em;
+        border-radius: 20px;
     }
 }
 
@@ -411,7 +413,7 @@ a.explore-btn:hover {
 }
 
 .scroll-container:hover .text-content {
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.75);
     transform: scale(1.02);
     box-shadow: 0 20px 60px rgba(6, 6, 6, 0.5);
 }

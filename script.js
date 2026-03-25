@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     heroTl.from(".hero-left > *", {
         y: 50,
         opacity: 0,
-        duration: 1.2,
+        duration: 0.5,
         stagger: 0.2,
         ease: "power3.out"
     });
@@ -27,9 +27,15 @@ document.addEventListener("DOMContentLoaded", function () {
             pin: true,
             start: "top top",
             end: "+=" + (sections.length * 280) + "%", // Adjusted for more smooth distance
-            scrub: 1.5,
+            scrub: 1, // Tighter scrub for better manual control
             pinSpacing: true,
             id: "wipe-trigger",
+            snap: {
+                snapTo: "labels",
+                duration: { min: 0.2, max: 0.8 },
+                delay: 0.1,
+                ease: "power1.inOut"
+            },
             onLeave: () => document.querySelector(".brand-nav").classList.add("hidden"),
             onEnterBack: () => document.querySelector(".brand-nav").classList.remove("hidden"),
             onUpdate: (self) => {
@@ -42,44 +48,54 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Nav icons are for index 1-5 (Items 1-5 correspond to Brands 0-4)
                 if (currentIndex === 0) {
                     updateActiveNavItem(-1); // On Intro: no brand icon active
+                    document.querySelector(".brand-nav").classList.add("hidden"); // Hides it on the Intro
                 } else {
-                    updateActiveNavItem(currentIndex - 1); 
+                    updateActiveNavItem(currentIndex - 1);
+                    document.querySelector(".brand-nav").classList.remove("hidden"); // Shows it only for Brands
                 }
             }
         }
     });
 
-    // Set initial nav state to visible (so it shows on the landing page)
-    gsap.set(".brand-nav", { autoAlpha: 1, y: 0 });
+    // Navigation visibility is now fully managed via the 'hidden' class toggles above
 
     sections.forEach((section, i) => {
         // Labeling for each brand/section
         const brandId = (i === 0) ? "intro" : "brand-" + (i - 1);
-        wipeTl.addLabel(brandId);
 
-        if (i === 0) return; // Skip Intro as it's the base layer
+        if (i === 0) {
+            wipeTl.addLabel("intro");
+            return;
+        }
 
         // 1. First Transition (Intro -> Travel) = VERTICAL WIPE (Top to Bottom)
         if (i === 1) {
+            const textArea = section.querySelector(".text-overlay-container");
             wipeTl.set(section, { autoAlpha: 1, zIndex: 10 + i })
-                .fromTo(section, { yPercent: 100 }, { yPercent: 0, duration: 3.5, ease: "power2.inOut" })
-                .to({}, { duration: 1.5 }); // Hold at Travel
+                .to(".hero-content", { opacity: 0, duration: 3.5, ease: "power2.inOut" })
+                .fromTo(section, { yPercent: 100 }, { yPercent: 0, duration: 3.5, ease: "power2.inOut" }, "<")
+                .fromTo(textArea, { opacity: 0 }, { opacity: 1, duration: 3.5, ease: "power2.inOut" }, "<")
+                .addLabel(brandId) // Snap point when fully visible
+                .to({}, { duration: 1.0 }); // Hold at Travel
             return;
         }
 
         // 2. Subsequent Transitions (Travel onwards) = HORIZONTAL WIPE
-        const isRightToLeft = i % 2 !== 0; 
+        const isRightToLeft = i % 2 !== 0;
         const img = section.querySelector(".afterImage img");
         const textArea = section.querySelector(".text-overlay-container");
+        const prevTextArea = sections[i - 1].querySelector(".text-overlay-container");
 
         const containerStart = isRightToLeft ? 100 : -100;
         const imageStart = isRightToLeft ? -100 : 100;
 
         wipeTl.set(section, { autoAlpha: 1, zIndex: 10 + i })
-            .fromTo(section, { xPercent: containerStart }, { xPercent: 0, duration: 3.5, ease: "power2.inOut" })
+            .to(prevTextArea, { opacity: 0, duration: 3.5, ease: "power2.inOut" })
+            .fromTo(section, { xPercent: containerStart }, { xPercent: 0, duration: 3.5, ease: "power2.inOut" }, "<")
             .fromTo(img, { xPercent: imageStart }, { xPercent: 0, duration: 3.5, ease: "power2.inOut" }, "<")
             .fromTo(textArea, { xPercent: imageStart, opacity: 0 }, { xPercent: 0, opacity: 1, duration: 3.5, ease: "power2.inOut" }, "<")
-            .to({}, { duration: 1.5 }); // Hold at this section
+            .addLabel(brandId) // Snap point when fully visible
+            .to({}, { duration: 1.0 }); // Hold at this section
     });
 
     // Brand Navigation Click Handlers
@@ -94,9 +110,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Calculate the absolute scroll position for this specific brand
             // Since sections[0] is Intro, Brands correspond to sections[1] to [5]
-            const sectionIndex = i + 1; 
+            const sectionIndex = i + 1;
             const scrollPos = st.start + (st.end - st.start) * (sectionIndex / (sections.length - 1));
-            
+
             // RE-ORIENT DIRECTION: 
             isYoyoBack = (i === navItems.length - 1);
 
@@ -127,18 +143,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const st = ScrollTrigger.getById("wipe-trigger");
         if (!st) return;
 
-        const startPos = st.start;
-        const endPos = st.end;
+        const startPos = 0; // Start at the very top (Intro)
+        const endPos = document.documentElement.scrollHeight - window.innerHeight; // End at the very bottom (Footer)
         const currentPos = window.scrollY;
 
         // If very close to end, switch direction
-        if (Math.abs(currentPos - endPos) < 10) isYoyoBack = true;
-        if (Math.abs(currentPos - startPos) < 10) isYoyoBack = false;
+        if (Math.abs(currentPos - endPos) < 20) isYoyoBack = true;
+        if (Math.abs(currentPos - startPos) < 20) isYoyoBack = false;
 
         const target = isYoyoBack ? startPos : endPos;
         const distanceLeft = Math.abs(currentPos - target);
         const totalDistance = Math.abs(endPos - startPos);
-        const baseDuration = sections.length * 6; // Harmonized Speed
+        const baseDuration = (sections.length + 1) * 6; // Harmonized Speed, adjusted for footer span
 
         const duration = (distanceLeft / totalDistance) * baseDuration;
 
@@ -150,7 +166,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ease: "none",
             onComplete: () => {
                 isYoyoBack = !isYoyoBack;
-                startAutoScroll();
+                // Add a hold delay at the end before reversing
+                resumeTimeout = setTimeout(startAutoScroll, 2000);
             }
         });
 
@@ -194,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.addEventListener("mouseleave", () => {
         isMouseInWindow = false;
-        resumeAutoScroll(1000); 
+        resumeAutoScroll(1000);
     });
 
     document.addEventListener("mousemove", () => {
@@ -207,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("touchstart", () => {
         handleUserInteraction();
         // Touch doesn't mean mouse is in window
-        setTimeout(() => resumeAutoScroll(3000), 100); 
+        setTimeout(() => resumeAutoScroll(3000), 100);
     });
 
     // 4. Initial scroll transition is handled below
