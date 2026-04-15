@@ -45,19 +45,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Map progress to current item index (0-5)
                 const currentIndex = Math.round(progress * (totalItems - 1));
 
-                // Nav icons are for index 1-5 (Items 1-5 correspond to Brands 0-4)
+                // Intro = index 0 => no brand active but nav visible
+                // Brands = index 1-5 => brand 0-4 active
                 if (currentIndex === 0) {
                     updateActiveNavItem(-1); // On Intro: no brand icon active
-                    document.querySelector(".brand-nav").classList.add("hidden"); // Hides it on the Intro
                 } else {
                     updateActiveNavItem(currentIndex - 1);
-                    document.querySelector(".brand-nav").classList.remove("hidden"); // Shows it only for Brands
                 }
+
+                // Always show brand nav while in the scroll container
+                document.querySelector(".brand-nav").classList.remove("hidden");
             }
         }
     });
 
     // Navigation visibility is now fully managed via the 'hidden' class toggles above
+    // Show brand nav immediately (visible from intro)
+    document.querySelector(".brand-nav").classList.remove("hidden");
 
     sections.forEach((section, i) => {
         // Labeling for each brand/section
@@ -68,35 +72,35 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // 1. First Transition (Intro -> Travel) = VERTICAL WIPE (Top to Bottom)
-        if (i === 1) {
-            const textArea = section.querySelector(".text-overlay-container");
-            wipeTl.set(section, { autoAlpha: 1, zIndex: 10 + i })
-                .to(".hero-content", { opacity: 0, duration: 3.5, ease: "power2.inOut" })
-                .fromTo(section, { yPercent: 100 }, { yPercent: 0, duration: 3.5, ease: "power2.inOut" }, "<")
-                .fromTo(textArea, { opacity: 0 }, { opacity: 1, duration: 3.5, ease: "power2.inOut" }, "<")
-                .addLabel(brandId) // Snap point when fully visible
-                .to({}, { duration: 1.0 }); // Hold at Travel
-            return;
-        }
-
-        // 2. Subsequent Transitions (Travel onwards) = HORIZONTAL WIPE
+        // ALL Transitions use HORIZONTAL WIPE (including Intro -> Travel)
         const isRightToLeft = i % 2 !== 0;
         const img = section.querySelector(".afterImage img");
         const textArea = section.querySelector(".text-overlay-container");
-        const prevTextArea = sections[i - 1].querySelector(".text-overlay-container");
+
+        // For i === 1, fade out the hero content instead of a previous text overlay
+        const prevTextArea = (i === 1) ? null : sections[i - 1].querySelector(".text-overlay-container");
 
         const containerStart = isRightToLeft ? 100 : -100;
         const imageStart = isRightToLeft ? -100 : 100;
 
-        wipeTl.set(section, { autoAlpha: 1, zIndex: 10 + i })
-            .to(prevTextArea, { opacity: 0, duration: 3.5, ease: "power2.inOut" })
-            .fromTo(section, { xPercent: containerStart }, { xPercent: 0, duration: 3.5, ease: "power2.inOut" }, "<")
+        wipeTl.set(section, { autoAlpha: 1, zIndex: 10 + i });
+
+        // Fade out the previous layer's content
+        if (i === 1) {
+            // Intro -> Travel: fade out hero content
+            wipeTl.to(".hero-content", { opacity: 0, duration: 3.5, ease: "power2.inOut" });
+        } else {
+            wipeTl.to(prevTextArea, { opacity: 0, duration: 3.5, ease: "power2.inOut" });
+        }
+
+        // Horizontal wipe in the new section
+        wipeTl.fromTo(section, { xPercent: containerStart }, { xPercent: 0, duration: 3.5, ease: "power2.inOut" }, "<")
             .fromTo(img, { xPercent: imageStart }, { xPercent: 0, duration: 3.5, ease: "power2.inOut" }, "<")
             .fromTo(textArea, { xPercent: imageStart, opacity: 0 }, { xPercent: 0, opacity: 1, duration: 3.5, ease: "power2.inOut" }, "<")
             .addLabel(brandId) // Snap point when fully visible
             .to({}, { duration: 1.0 }); // Hold at this section
     });
+
 
     // Brand Navigation Click Handlers
     const navItems = document.querySelectorAll(".brand-nav-item");
@@ -154,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const target = isYoyoBack ? startPos : endPos;
         const distanceLeft = Math.abs(currentPos - target);
         const totalDistance = Math.abs(endPos - startPos);
-        const baseDuration = (sections.length + 1) * 6; // Harmonized Speed, adjusted for footer span
+        const baseDuration = (sections.length + 1) * 3; // Harmonized Speed, adjusted for footer span
 
         const duration = (distanceLeft / totalDistance) * baseDuration;
 
@@ -167,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
             onComplete: () => {
                 isYoyoBack = !isYoyoBack;
                 // Add a hold delay at the end before reversing
-                resumeTimeout = setTimeout(startAutoScroll, 2000);
+                resumeTimeout = setTimeout(startAutoScroll, 1000);
             }
         });
 
@@ -233,8 +237,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initial scroll from landing (Ultra Smooth Transition)
     initialScrollTween = gsap.to(window, {
         scrollTo: { y: ".scroll-container", autoKill: true },
-        duration: 4, // More deliberate and smooth
-        delay: 3,    // Allow user to read the hero section first
+        duration: 1.5, // More deliberate and smooth
+        delay: 2,    // Allow user to read the hero section first
         ease: "power2.inOut",
         onComplete: () => {
             if (!isMouseInWindow) {

@@ -358,8 +358,8 @@ a.explore-btn:hover {
     border: 1px solid rgba(255, 255, 255, 0.15);
 
     /* Fixed Size Implementation */
-    width: 480px;
-    height: 320px;
+    width: 520px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -374,6 +374,34 @@ a.explore-btn:hover {
         margin: 1em;
         border-radius: 20px;
     }
+}
+
+/* Container for the logo inside the card */
+.brand-card-logo {
+    width: 100%;
+    max-height: 80px;
+    /* Limits height to prevent pushing text out */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+/* The logo image itself */
+.brand-card-logo img {
+    max-width: 250px;
+    /* Adjust based on your logo design */
+    height: auto;
+    object-fit: contain;
+}
+
+/* Adjusting the text content to accommodate the logo */
+.text-content {
+    /* You already have width: 480px and height: 320px in your CSS */
+    padding: 1.5rem;
+    /* Slightly reduced padding to make room */
+    gap: 0.2rem;
+    /* Tighter gap between elements */
 }
 
 .brand-bold {
