@@ -48,7 +48,7 @@ h1:hover span {
 p {
     font-size: 1.2rem;
     line-height: 1.6;
-    max-width: 80%;
+    max-width: 85%;
     opacity: 0.8;
 }
 
@@ -376,7 +376,8 @@ a.explore-btn:hover {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Changed from center to fix top-clipping bug */
+    justify-content: flex-start;
+    /* Changed from center to fix top-clipping bug */
     align-items: center;
     gap: 1.5rem;
     padding: 3rem clamp(1.5rem, 5vw, 4rem);
@@ -395,7 +396,8 @@ a.explore-btn:hover {
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin: auto 0; /* Changed from 1.5rem 0 to auto to help with centering */
+    margin: auto 0;
+    /* Changed from 1.5rem 0 to auto to help with centering */
 }
 
 .text-content::-webkit-scrollbar {
@@ -450,7 +452,8 @@ a.explore-btn:hover {
         height: auto;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start; /* Changed from center to fix top-clipping bug */
+        justify-content: flex-start;
+        /* Changed from center to fix top-clipping bug */
         align-items: center;
         gap: 1rem;
         padding: 2rem 1rem;
@@ -506,7 +509,8 @@ a.explore-btn:hover {
     justify-content: center;
     align-items: center;
     margin-bottom: 0.5rem;
-    margin-top: auto; /* Helps with centering in flex-start container */
+    margin-top: auto;
+    /* Helps with centering in flex-start container */
 }
 
 /* The logo image itself */
@@ -575,7 +579,8 @@ a.explore-btn:hover {
     background: transparent;
     flex-shrink: 0;
     margin-top: 2rem;
-    margin-bottom: auto; /* Helps with centering in flex-start container */
+    margin-bottom: auto;
+    /* Helps with centering in flex-start container */
 }
 
 .text-content .explore-btn:hover {
