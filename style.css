@@ -76,7 +76,7 @@ a.explore-btn:hover {
     min-height: 100vh;
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: top;
     justify-content: center;
     position: relative;
     overflow: hidden;
@@ -350,6 +350,8 @@ a.explore-btn:hover {
     background: rgba(0, 0, 0, 0.75);
     padding: 2.0rem;
     margin: 1em;
+    margin-bottom: 8vh;
+    /* Pushes the card slightly upwards */
     backdrop-filter: blur(12px);
     border-radius: 20px;
     /* Slightly more curved for the premium look */
@@ -358,8 +360,8 @@ a.explore-btn:hover {
     border: 1px solid rgba(255, 255, 255, 0.15);
 
     /* Fixed Size Implementation */
-    width: 520px;
-    height: 400px;
+    width: 55%;
+    height: 70%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -367,21 +369,59 @@ a.explore-btn:hover {
     gap: 0.4rem;
 }
 
+.gourmet-logos-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.gourmet-logos-grid img {
+    max-height: 40px;
+    object-fit: contain;
+    opacity: 0.9;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.gourmet-logos-grid img:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
 @media (max-width: 768px) {
     .text-content {
-        height: 350px;
-        padding: 1.5rem 2.2rem;
+        height: 55%;
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 1.5rem;
         margin: 1em;
         border-radius: 20px;
+        text-align: center;
+    }
+
+    .gourmet-logos-grid {
+        gap: 1rem;
+    }
+
+    .gourmet-logos-grid img {
+        max-height: 25px;
     }
 }
 
 /* Container for the logo inside the card */
 .brand-card-logo {
     width: 100%;
-    max-height: 80px;
+    max-height: 100%;
     /* Limits height to prevent pushing text out */
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-bottom: 1.5rem;
@@ -389,7 +429,7 @@ a.explore-btn:hover {
 
 /* The logo image itself */
 .brand-card-logo img {
-    max-width: 250px;
+    max-width: 450px;
     /* Adjust based on your logo design */
     height: auto;
     object-fit: contain;
@@ -408,6 +448,26 @@ a.explore-btn:hover {
     font-weight: 800;
 }
 
+.text-division {
+    /* justify-content: space-between; */
+    color: #882440;
+    height: auto;
+    /* Allow the card to grow with the new content */
+    min-height: 380px;
+    /* Ensure a consistent minimum size */
+    padding: 2rem 1.5rem;
+    margin-top: 10px;
+    letter-spacing: 1px;
+    /* This replaces the red line visually */
+    padding-bottom: 5px;
+}
+
+.text-link {
+    text-align: center;
+    color: white;
+    text-decoration: underline;
+}
+
 .text-content h2 {
     font-size: 2.22rem;
     /* Reduced title size */
@@ -417,7 +477,8 @@ a.explore-btn:hover {
 }
 
 .text-content p {
-    font-size: 1.3rem;
+    text-align: justify;
+    font-size: 1rem;
     margin-bottom: 1rem;
     color: rgba(255, 255, 255, 0.9);
 }
