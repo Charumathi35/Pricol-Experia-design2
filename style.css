@@ -48,7 +48,7 @@ h1:hover span {
 p {
     font-size: 1.2rem;
     line-height: 1.6;
-    max-width: 600px;
+    max-width: 80%;
     opacity: 0.8;
 }
 
@@ -366,25 +366,41 @@ a.explore-btn:hover {
     transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.15);
 
-    /* Responsive Size Implementation */
-    width: 70%;
-    max-width: 1000px;
-    height: 75%;
-    /* Common strict size for all sections */
+    /* Dynamic Size Implementation */
+    width: 85%;
+    max-width: 1200px;
+    height: auto;
+    min-height: 55vh;
+    max-height: 85vh;
+    /* Common strict size concept replaced by min-height for neatness */
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Changed from center to fix top-clipping bug */
+    align-items: center;
+    gap: 1.5rem;
+    padding: 3rem clamp(1.5rem, 5vw, 4rem);
+
+    /* Hide scrollbar but keep functionality */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.text-middle-wrap {
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.4rem;
-    
-    /* Hide scrollbar but keep functionality */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    width: 100%;
+    margin: auto 0; /* Changed from 1.5rem 0 to auto to help with centering */
 }
 
 .text-content::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
+    display: none;
+    /* Chrome, Safari and Opera */
 }
 
 .gourmet-logos-grid {
@@ -398,7 +414,7 @@ a.explore-btn:hover {
 }
 
 .gourmet-logos-grid img {
-    max-height: 35px;
+    max-height: 70px;
     object-fit: contain;
     opacity: 0.9;
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -411,9 +427,11 @@ a.explore-btn:hover {
 
 @media (max-width: 1200px) {
     .text-content {
-        width: 80%;
-        height: 80%;
-        /* Common strict size */
+        width: 90%;
+        min-height: 60vh;
+        max-height: 80vh;
+        height: auto;
+        padding: 2.5rem clamp(1rem, 4vw, 3rem);
     }
 
     .gourmet-logos-grid {
@@ -421,21 +439,21 @@ a.explore-btn:hover {
     }
 
     .gourmet-logos-grid img {
-        max-height: 28px;
+        max-height: 20px;
     }
 }
 
 @media (max-width: 768px) {
     .text-content {
-        height: 95%;
-        /* Exact common height */
-        width: 95%;
+        min-height: 70vh;
+        max-height: 95%;
+        height: auto;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start; /* Changed from center to fix top-clipping bug */
         align-items: center;
-        gap: 0.1rem;
-        padding: 1.2rem;
+        gap: 1rem;
+        padding: 2rem 1rem;
         margin: 0;
         border-radius: 20px;
         text-align: center;
@@ -470,8 +488,8 @@ a.explore-btn:hover {
 
     .text-content p {
         text-align: justify;
-        font-size: 0.75rem;
-        line-height: 1.35;
+        font-size: 0.95rem;
+        line-height: 1.5;
         margin-bottom: 0.5rem;
         color: rgba(255, 255, 255, 0.9);
     }
@@ -488,6 +506,7 @@ a.explore-btn:hover {
     justify-content: center;
     align-items: center;
     margin-bottom: 0.5rem;
+    margin-top: auto; /* Helps with centering in flex-start container */
 }
 
 /* The logo image itself */
@@ -538,8 +557,8 @@ a.explore-btn:hover {
 
 .text-content p {
     text-align: justify;
-    font-size: clamp(0.85rem, 1.2vw, 1.2rem);
-    line-height: 1.2;
+    font-size: clamp(1rem, 1.4vw, 1.35rem);
+    line-height: 1.7;
     margin-bottom: 0.5rem;
     color: rgba(255, 255, 255, 0.9);
 }
@@ -547,14 +566,16 @@ a.explore-btn:hover {
 .text-content .explore-btn {
     border: 1.5px solid #ffffff;
     color: #ffffff;
-    padding: 1rem 3rem;
+    padding: 0.8rem 2.5rem;
     font-size: 1rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 2px;
     border-radius: 50px;
-    /* Curved edge for examine box */
     background: transparent;
+    flex-shrink: 0;
+    margin-top: 2rem;
+    margin-bottom: auto; /* Helps with centering in flex-start container */
 }
 
 .text-content .explore-btn:hover {
