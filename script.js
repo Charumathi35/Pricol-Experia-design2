@@ -247,4 +247,29 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Scroll to Top functionality
+    const scrollTopBtn = document.getElementById("scrollToTopBtn");
+    
+    if (scrollTopBtn) {
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > window.innerHeight / 2) {
+                scrollTopBtn.classList.add("visible");
+            } else {
+                scrollTopBtn.classList.remove("visible");
+            }
+        });
+
+        scrollTopBtn.addEventListener("click", () => {
+            handleUserInteraction(); // Stop auto-scroll temporarily
+            gsap.to(window, {
+                scrollTo: 0,
+                duration: 1.5,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    resumeAutoScroll(3000); // Resume auto scroll after 3s
+                }
+            });
+        });
+    }
+
 });
