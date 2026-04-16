@@ -356,12 +356,10 @@ a.explore-btn:hover {
 .text-content {
     text-align: center;
     background: rgba(0, 0, 0, 0.75);
-    padding: 1.5rem clamp(1rem, 3vw, 2.5rem);
+    padding: 3vh clamp(1.5rem, 5vw, 4rem);
     margin: 1em;
-    /* margin-bottom removed */
     backdrop-filter: blur(12px);
     border-radius: 20px;
-    /* Slightly more curved for the premium look */
     pointer-events: auto;
     transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -371,33 +369,26 @@ a.explore-btn:hover {
     max-width: 1200px;
     height: auto;
     min-height: 55vh;
-    max-height: 85vh;
-    /* Common strict size concept replaced by min-height for neatness */
-    overflow-y: auto;
+    max-height: 90vh; /* Increased slightly to give more room, but ensure vertical fit */
+    
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    /* Changed from center to fix top-clipping bug */
+    justify-content: space-evenly; /* Equal spacing arrangement */
     align-items: center;
-    gap: 1.5rem;
-    padding: 3rem clamp(1.5rem, 5vw, 4rem);
+    gap: 2vh; /* Use fluid gap */
+    overflow-y: auto; /* Safety fallback, but aim for no scroll */
 
     /* Hide scrollbar but keep functionality */
     -ms-overflow-style: none;
-    /* IE and Edge */
     scrollbar-width: none;
-    /* Firefox */
 }
 
 .text-middle-wrap {
-    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin: auto 0;
-    /* Changed from 1.5rem 0 to auto to help with centering */
 }
 
 .text-content::-webkit-scrollbar {
@@ -410,13 +401,13 @@ a.explore-btn:hover {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 1.2rem;
-    margin: 1rem 0;
+    gap: 1vh 1rem; /* Compact vertical gap */
+    margin: 1vh 0;
     width: 100%;
 }
 
 .gourmet-logos-grid img {
-    max-height: 70px;
+    max-height: 5vh; /* Scale with viewport height */
     object-fit: contain;
     opacity: 0.9;
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -448,15 +439,14 @@ a.explore-btn:hover {
 @media (max-width: 768px) {
     .text-content {
         min-height: 70vh;
-        max-height: 95%;
+        max-height: 98vh; /* Maximize vertical usage on mobile */
         height: auto;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
-        /* Changed from center to fix top-clipping bug */
+        justify-content: space-between; /* Maintain equal spacing on mobile */
         align-items: center;
-        gap: 1rem;
-        padding: 2rem 1rem;
+        gap: 2vh;
+        padding: 4vh 1.5rem;
         margin: 0;
         border-radius: 20px;
         text-align: center;
@@ -503,33 +493,22 @@ a.explore-btn:hover {
 /* Container for the logo inside the card */
 .brand-card-logo {
     width: 100%;
-    max-height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 0.5rem;
-    margin-top: auto;
-    /* Helps with centering in flex-start container */
+    flex-shrink: 0; /* Prevent the logo from being squashed */
 }
 
 /* The logo image itself */
 .brand-card-logo img {
     max-width: 350px;
-    max-height: 120px;
-    /* Constrain the logo height to prevent layout blowout */
+    max-height: 12vh; /* Scale logo height with viewport */
     height: auto;
     object-fit: contain;
 }
 
 /* Adjusting the text content to accommodate the logo */
-.text-content {
-    /* You already have width: 480px and height: 320px in your CSS */
-    padding: 1.5rem;
-    /* Slightly reduced padding to make room */
-    gap: 0.2rem;
-    /* Tighter gap between elements */
-}
 
 .brand-bold {
     font-weight: 800;
@@ -561,26 +540,24 @@ a.explore-btn:hover {
 
 .text-content p {
     text-align: justify;
-    font-size: clamp(1rem, 1.4vw, 1.35rem);
-    line-height: 1.7;
-    margin-bottom: 0.5rem;
+    font-size: clamp(0.95rem, 1.2vw, 1.25rem);
+    line-height: 1.6;
+    margin-bottom: 0.5vh;
     color: rgba(255, 255, 255, 0.9);
 }
 
 .text-content .explore-btn {
     border: 1.5px solid #ffffff;
     color: #ffffff;
-    padding: 0.8rem 2.5rem;
-    font-size: 1rem;
+    padding: 0.6rem 2.2rem; /* Slimmer button */
+    font-size: 0.9rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 2px;
     border-radius: 50px;
     background: transparent;
-    flex-shrink: 0;
-    margin-top: 2rem;
-    margin-bottom: auto;
-    /* Helps with centering in flex-start container */
+    flex-shrink: 0; /* Prevent the button from being squashed */
+    margin-top: 1vh;
 }
 
 .text-content .explore-btn:hover {
